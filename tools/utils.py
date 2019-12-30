@@ -40,9 +40,9 @@ def get_exp_path(path):
         # path = path + "-" + tt
         # os.system(f"mkdir -p {path}")
         rm_path = path + "*.bin"
-        os.system(f"rm -rf {rm_path}")
+        os.system("rm -rf {}".format(rm_path))
     else:
-        os.system(f"mkdir -p {path}")
+        os.system("mkdir -p {}".format(path))
     return path
 
 
@@ -88,7 +88,7 @@ def cal_empiral_freqs(occurrences, smooth_c):
     return dist
 
 
-def load_txt_var(args, source: bool, word2id):
+def load_txt_var(args, source, word2id):
     # reload variance file
     path = args.src_var_path if source else args.tgt_var_path
 
@@ -112,7 +112,7 @@ def load_txt_var(args, source: bool, word2id):
     return var
 
 
-def load_bin_embeddings(args, source: bool):
+def load_bin_embeddings(args, source):
     """
     Reload pretrained embeddings from a fastText binary file.
     """
@@ -145,7 +145,7 @@ def load_bin_embeddings(args, source: bool):
     dico = Dictionary(id2word, word2id, lang, word_dist)
 
     assert embeddings.shape == (len(dico), args.emb_dim)
-    print(f"Number of words in {lang} = {len(dico)}", len(word_dist))
+    print("Number of words in {} = {}".format(lang, len(dico)), len(word_dist))
     print("Max frequency = %.7f, min frequency = %.7f" % (max(word_dist), min(word_dist)))
 
     return dico, embeddings, word_dist

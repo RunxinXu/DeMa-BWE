@@ -37,14 +37,14 @@ def load_fasttext_model(path):
     Load a binarized fastText model.
     """
     try:
-        import fastText
+        import fasttext
     except ImportError:
         raise Exception("Unable to import fastText. Please install fastText for Python: "
                         "https://github.com/facebookresearch/fastText")
-    return fastText.load_model(path)
+    return fasttext.load_model(path)
 
 
-def load_bin_embeddings(args, source: bool):
+def load_bin_embeddings(args, source):
     """
     Reload pretrained embeddings from a fastText binary file.
     """
@@ -70,7 +70,7 @@ def load_bin_embeddings(args, source: bool):
     dico = Dictionary(id2word, word2id, lang)
 
     assert embeddings.shape == (len(dico), args.emb_dim)
-    print(f"Number of words in {lang} = {len(dico)}")
+    print("Number of words in {} = {}".format(lang, len(dico)))
 
     return embeddings, dico
 
@@ -163,12 +163,12 @@ def export_embeddings(src_emb, tgt_emb, exp_path, src_dict, tgt_dict, s2t=True, 
 
     if s2t:
         mapped_src_emb = mapped_src_emb.numpy()
-        print(f'Writing mapped source to target embeddings to {src_path}')
+        print('Writing mapped source to target embeddings to {}'.format(src_path))
         with io.open(src_path, 'w', encoding='utf-8') as f:
             f.write(u"%i %i\n" % mapped_src_emb.shape)
             for i in range(len(src_dict)):
                 f.write(u"%s %s\n" % (src_dict[i], " ".join('%.5f' % x for x in mapped_src_emb[i])))
-        print(f'Writing corresponding target embeddings to {pre_tgt_path}')
+        print('Writing corresponding target embeddings to {}'.format(pre_tgt_path))
         with io.open(pre_tgt_path, 'w', encoding='utf-8') as f:
             f.write(u"%i %i\n" % tgt_emb.shape)
             for i in range(len(tgt_dict)):
@@ -176,12 +176,12 @@ def export_embeddings(src_emb, tgt_emb, exp_path, src_dict, tgt_dict, s2t=True, 
 
     if t2s:
         mapped_tgt_emb = mapped_tgt_emb.numpy()
-        print(f'Writing mapped target to source embeddings to {tgt_path}')
+        print('Writing mapped target to source embeddings to {}'.format(tgt_path))
         with io.open(tgt_path, 'w', encoding='utf-8') as f:
             f.write(u"%i %i\n" % mapped_tgt_emb.shape)
             for i in range(len(tgt_dict)):
                 f.write(u"%s %s\n" % (tgt_dict[i], " ".join('%.5f' % x for x in mapped_tgt_emb[i])))
-        print(f'Writing corresponding source embeddings to {pre_src_path}')
+        print('Writing corresponding source embeddings to {}'.format(pre_src_path))
         with io.open(pre_src_path, 'w', encoding='utf-8') as f:
             f.write(u"%i %i\n" % src_emb.shape)
             for i in range(len(src_dict)):
